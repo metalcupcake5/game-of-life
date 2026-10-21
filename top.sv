@@ -27,13 +27,14 @@ module top(
     logic shift;
     logic ws2812b_out;
     logic frame_change;
-    logic [63:0] game_board = 64'b0;
 
     assign address = { frame, pixel };
 
     game #() test (
         .clk            (clk),
         .red_data       (red_data),
+        .blue_data       (blue_data),
+        .green_data       (green_data),
         .pixel          (pixel),
         .transmit_pixel (transmit_pixel),
         .frame_change   (frame_change)
@@ -85,10 +86,13 @@ module top(
         .frame_change   (frame_change)
     );
 
-    colors c1 (
-        .clk            (clk),
-        .board      (game_board)
-    );
+    // colors c1 (
+    //     .clk            (clk),
+    //     .board          (game_board),
+    //     .red_data       (red_data),
+    //     .blue_data      (blue_data),
+    //     .green_data     (green_data)
+    // );
 
     always_ff @(posedge clk) begin
         if (load_sreg) begin
