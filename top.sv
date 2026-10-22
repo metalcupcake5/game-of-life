@@ -33,8 +33,8 @@ module top(
     game #() test (
         .clk            (clk),
         .red_data       (red_data),
-        .blue_data       (blue_data),
-        .green_data       (green_data),
+        .blue_data      (blue_data),
+        .green_data     (green_data),
         .pixel          (pixel),
         .transmit_pixel (transmit_pixel),
         .frame_change   (frame_change)

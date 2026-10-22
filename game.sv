@@ -5,8 +5,7 @@ module game (
     input logic frame_change,
     output logic [7:0] red_data,
     output logic [7:0] blue_data,
-    output logic [7:0] green_data,
-    output logic [63:0] board
+    output logic [7:0] green_data
 );
     parameter INTERVAL = 6000000;
     logic [$clog2(INTERVAL) - 1:0] count = 0;
@@ -21,6 +20,7 @@ module game (
     // lightweight spaceship
     // logic [63:0] board = {{16{1'b0}}, {{8'b00011000}}, {{8'b00111100}}, {{8'b01101100}}, {{8'b00110000}}, {16{1'b0}}}; 
 
+    logic [63:0] board;
     logic [63:0] new_board = 64'b0;
 
     logic [1:0] red_count = 1;
@@ -31,8 +31,12 @@ module game (
     logic blue_on = 1'b1;
     logic green_on = 1'b1;
 
+    logic [63:0] mem [0:3];
+    logic memory_read = 0;
+
     initial begin
-        board <= {{16{1'b0}}, {{8'b00011000}}, {{8'b00111100}}, {{8'b01101100}}, {{8'b00110000}}, {16{1'b0}}}; 
+        // board <= {{16{1'b0}}, {{8'b00011000}}, {{8'b00111100}}, {{8'b01101100}}, {{8'b00110000}}, {16{1'b0}}}; 
+        $readmemh("gamestate.txt", mem);
     end
 
 
@@ -47,6 +51,14 @@ module game (
         // new_board[27] <= 1;
         // new_board[35] <= 1;
     end
+
+    always_ff @(posedge clk) begin
+        if (!memory_read) begin
+            memory_read = 1;
+            board <= mem[0];
+        end
+    end
+
 
     always_ff @(posedge frame_change) begin
         for (int i = 0; i < 64; i = i + 1) begin
