@@ -31,21 +31,13 @@ module game (
     logic blue_on = 1'b1;
     logic green_on = 1'b1;
 
-    logic [63:0] mem [0:1];
-    logic [1:0] memory_read = 1'b0;
+    logic [63:0] mem [0:0];
+    logic memory_read = 1'b0;
 
     initial begin
         // board <= {{16{1'b0}}, {{8'b00011000}}, {{8'b00111100}}, {{8'b01101100}}, {{8'b00110000}}, {16{1'b0}}}; 
         $readmemh("gamestate.txt", mem);
     end
-
-    always_ff @(posedge clk) begin
-        if (memory_read == 0) begin
-            memory_read <= 1'b1;
-            board <= mem[0];
-        end
-    end
-
 
     always_ff @(posedge frame_change) begin
         for (int i = 0; i < 64; i = i + 1) begin
@@ -78,7 +70,14 @@ module game (
     end
 
     always_ff @(negedge frame_change) begin
-        board <= new_board;
+        // set memory if it has not been set
+        if (memory_read == 0) begin
+            memory_read <= 1'b1;
+            board <= mem[0];
+        end else begin
+            board <= new_board;
+        end
+
         if (red_count == 2) begin
             red_on <= ~red_on;
         end
