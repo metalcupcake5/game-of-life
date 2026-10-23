@@ -31,8 +31,8 @@ module game (
     logic blue_on = 1'b1;
     logic green_on = 1'b1;
 
-    logic [63:0] mem [0:3];
-    logic memory_read = 0;
+    logic [63:0] mem [0:1];
+    logic [1:0] memory_read = 1'b0;
 
     initial begin
         // board <= {{16{1'b0}}, {{8'b00011000}}, {{8'b00111100}}, {{8'b01101100}}, {{8'b00110000}}, {16{1'b0}}}; 
@@ -53,8 +53,8 @@ module game (
     end
 
     always_ff @(posedge clk) begin
-        if (!memory_read) begin
-            memory_read = 1;
+        if (memory_read == 0) begin
+            memory_read <= 1'b1;
             board <= mem[0];
         end
     end
