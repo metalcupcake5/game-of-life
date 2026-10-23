@@ -109,9 +109,9 @@ module game (
             blue_on <= ~blue_on;
         end
 
-        red_count = red_count == 2 ? 0 : red_count + 1;
-        green_count = green_count == 2 ? 0 : green_count + 1;
-        blue_count = blue_count == 2 ? 0 : blue_count + 1;
+        red_count <= red_count == 2 ? 0 : red_count + 1;
+        green_count <= green_count == 2 ? 0 : green_count + 1;
+        blue_count <= blue_count == 2 ? 0 : blue_count + 1;
     end
 
     always_comb begin
