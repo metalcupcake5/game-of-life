@@ -19,7 +19,6 @@ module top(
 
     logic [5:0] pixel;
     logic [4:0] frame;
-    logic [10:0] address;
 
     logic [23:0] shift_reg = 24'd0;
     logic load_sreg;
@@ -27,8 +26,6 @@ module top(
     logic shift;
     logic ws2812b_out;
     logic frame_change;
-
-    assign address = { frame, pixel };
 
     game #() test (
         .clk            (clk),
@@ -40,34 +37,7 @@ module top(
         .frame_change   (frame_change)
     );
 
-    // Instance sample memory for red channel
-    // memory #(
-    //     .INIT_FILE      ("spiral/red.txt")
-    // ) u1 (
-    //     .clk            (clk), 
-    //     .read_address   (address), 
-    //     .read_data      (red_data)
-    // );
-
-    // Instance sample memory for green channel
-    // memory #(
-    //     .INIT_FILE      ("spiral/green.txt")
-    // ) u2 (
-    //     .clk            (clk), 
-    //     .read_address   (address), 
-    //     .read_data      (green_data)
-    // );
-    //
-    // // Instance sample memory for blue channel
-    // memory #(
-    //     .INIT_FILE      ("spiral/blue.txt")
-    // ) u3 (
-    //     .clk            (clk), 
-    //     .read_address   (address), 
-    //     .read_data      (blue_data)
-    // );
-    //
-    // // Instance the WS2812B output driver
+    // Instance the WS2812B output driver
     ws2812b u4 (
         .clk            (clk), 
         .serial_in      (shift_reg[23]), 
@@ -85,14 +55,6 @@ module top(
         .frame          (frame),
         .frame_change   (frame_change)
     );
-
-    // colors c1 (
-    //     .clk            (clk),
-    //     .board          (game_board),
-    //     .red_data       (red_data),
-    //     .blue_data      (blue_data),
-    //     .green_data     (green_data)
-    // );
 
     always_ff @(posedge clk) begin
         if (load_sreg) begin

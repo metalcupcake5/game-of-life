@@ -39,19 +39,6 @@ module game (
         $readmemh("gamestate.txt", mem);
     end
 
-
-    logic row;
-    logic col;
-
-    initial begin
-        // board[19] <= 1;
-        // board[27] <= 1;
-        // board[35] <= 1;
-        // new_board[19] <= 1;
-        // new_board[27] <= 1;
-        // new_board[35] <= 1;
-    end
-
     always_ff @(posedge clk) begin
         if (memory_read == 0) begin
             memory_read <= 1'b1;
@@ -87,12 +74,7 @@ module game (
                 8:
                     new_board[i] <= 0;
             endcase
-            // new_board[i] <= 
-            //     board[{i[5:3] + 1'b1, i[2:0]}] 
-            //     ? 1 : 0;
         end
-        // out <= test[2:0];
-        // out2 <= test[5:3];
     end
 
     always_ff @(negedge frame_change) begin
@@ -115,8 +97,6 @@ module game (
     end
 
     always_comb begin
-        // out = board[63];
-        // red_data = board[pixel] ? 8'b11000000 : 8'b0;
         red_data = (board[pixel] && red_on) ? '1 : 8'b0;
         blue_data = (board[pixel] && blue_on) ? '1 : 8'b0;
         green_data = (board[pixel] && green_on) ? '1 : 8'b0;
